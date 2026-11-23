@@ -52,7 +52,7 @@ Assinatura, grátis, aluguel e compra, com os seus serviços primeiro. Tocar num
 <tr>
 <td align="center"><img src="docs/img/icons/descobrir.svg" width="56" alt="" /></td>
 <td><b>Ache o próximo</b><br/>
-Em alta na semana, populares, estreias nos cinemas e o que está chegando ao streaming. Filtros por gênero e por serviço, e um botão que sorteia algo da sua lista Quero ver.</td>
+Busca de filmes e séries, os destaques da semana, o Top 10, populares, estreias nos cinemas, o que está chegando ao streaming e o que tem nos seus serviços. Filtros por gênero e por serviço, e um botão que sorteia algo da sua lista Quero ver.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/letterboxd.svg" width="56" alt="" /></td>
