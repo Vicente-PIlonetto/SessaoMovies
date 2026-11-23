@@ -117,26 +117,65 @@ fun YouScreen(nav: Nav) {
     val vm = appViewModel { YouViewModel(it) }
     val stats by vm.stats.collectAsStateWithLifecycle()
     val items by vm.items.collectAsStateWithLifecycle()
-    val pager = rememberPagerState { 2 }
-    Column(Modifier.fillMaxSize()) {
-        TopBar(t("Você")) { IconButton(onClick = { nav.settings() }) { Icon(Icons.Outlined.Settings, t("Configurações")) } }
-        PagerSegmented(pager, listOf(t("Números"), t("Histórico")), Modifier.padding(horizontal = 20.dp, vertical = 6.dp))
-        HorizontalPager(pager, Modifier.fillMaxSize()) { page ->
-            if (page == 0) StatsPage(stats) else HistoryPage(items, nav)
+    val c = dev.viko.sessao.ui.nav.LocalContainer.current
+    val ctx = androidx.compose.ui.platform.LocalContext.current
+    val p = AppTheme.palette
+    val style by c.settings.profileStyle.collectAsStateWithLifecycle(initialValue = dev.viko.sessao.data.settings.ProfileStyle())
+    val session by c.trakt.session.collectAsStateWithLifecycle()
+    var tab by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(0) }
+    val name = style.name.trim().ifBlank { session?.name?.takeIf { it.isNotBlank() } ?: session?.username ?: t("Você") }
+
+    LazyColumn(Modifier.fillMaxSize()) {
+        item(key = "header") {
+            dev.viko.sessao.ui.components.ProfileHeader(
+                name = name,
+                avatar = dev.viko.sessao.ui.components.resolveAvatar(ctx, style, session?.avatar),
+                banner = dev.viko.sessao.ui.components.resolveBanner(ctx, style),
+                color = dev.viko.sessao.data.settings.ProfileColor.byId(style.colorId),
+                animated = style.animatedBg,
+                subtitle = session?.username?.let { "@$it · Trakt" },
+                top = {
+                    Spacer(Modifier.weight(1f))
+                    IconButton(onClick = { nav.settings() }, colors = androidx.compose.material3.IconButtonDefaults.iconButtonColors(containerColor = p.background.copy(alpha = 0.7f))) {
+                        Icon(Icons.Outlined.Settings, t("Configurações"))
+                    }
+                },
+                trailing = { androidx.compose.material3.TextButton(onClick = nav::customize) { Text(t("Personalizar"), color = p.accent) } },
+            )
+            if (style.bio.isNotBlank()) Text(style.bio.trim(), style = MaterialTheme.typography.bodyMedium, color = p.textSecondary, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            if (session == null) dev.viko.sessao.ui.components.LinkRow(t("Entrar no Trakt para sincronizar e seguir amigos")) { nav.settings("trakt") }
         }
+        val favs = style.favorites.mapNotNull { k -> items?.firstOrNull { it.key == k } }
+        if (favs.isNotEmpty()) item(key = "favs") {
+            SectionHeader(t("Favoritos"))
+            androidx.compose.foundation.lazy.LazyRow(contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                items(favs, key = { "f-${it.key}" }) { i ->
+                    val k = coverKey("fav", i.key)
+                    Column(Modifier.width(96.dp).pressable(onClick = { nav.detail(i.key, k) })) {
+                        Cover(TmdbImages.poster(i.title?.posterPath), 96.dp, color = i.title?.posterColor, sharedKey = k)
+                        Text(i.title?.name ?: "", style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 4.dp))
+                    }
+                }
+            }
+        }
+        item(key = "tabs") {
+            dev.viko.sessao.ui.components.Segmented(listOf(t("Números"), t("Histórico")), tab, { tab = it }, Modifier.padding(horizontal = 20.dp, vertical = 12.dp))
+        }
+        if (tab == 0) item(key = "stats") { StatsContent(stats) } else historyItems(items, nav)
+        item { Spacer(Modifier.height(24.dp)) }
     }
 }
 
 // ---------------- Números ----------------
 
 @Composable
-private fun StatsPage(st: Stats?) {
+private fun StatsContent(st: Stats?) {
     if (st == null) { SkeletonRows(); return }
     if (st.series + st.movies == 0) { EmptyState(t("Nada na lista ainda.")); return }
     val s = LocalSettings.current
     val pt = java.util.Locale.forLanguageTag("pt-BR")
     val md = ScoreBuckets.meanAndDeviation(st.scores)
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 32.dp)) {
+    Column {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Tile(t("Séries"), "${st.series}", Modifier.weight(1f))
@@ -287,37 +326,35 @@ private fun BarTrack(frac: Float, color: Color, modifier: Modifier) {
 
 // ---------------- Histórico ----------------
 
-/** O que terminei, agrupado por mês (o mais recente primeiro). */
+/** O que terminei, agrupado por mês (o mais recente primeiro), como itens da lista de Você. */
+private fun androidx.compose.foundation.lazy.LazyListScope.historyItems(items: List<Item>?, nav: Nav) {
+    val list = items ?: run { item { SkeletonRows() }; return }
+    val done = list.filter { it.entry.status == WatchStatus.COMPLETED && it.entry.finishedAt != null }.sortedByDescending { it.entry.finishedAt }
+    if (done.isEmpty()) { item { EmptyState(t("Nada terminado ainda.")) }; return }
+    done.groupBy { YearMonth.from(Dates.of(it.entry.finishedAt!!)) }.forEach { (month, rows) ->
+        item(key = "m-$month") { SectionHeader(Dates.month(month.atDay(1)), rows.size) }
+        items(rows, key = { "h-${it.key}" }) { i -> HistoryRow(i, nav) }
+    }
+}
+
 @Composable
-private fun HistoryPage(items: List<Item>?, nav: Nav) {
+private fun HistoryRow(i: Item, nav: Nav) {
     val s = LocalSettings.current
     val p = AppTheme.palette
-    val list = items ?: return SkeletonRows()
-    val done = list.filter { it.entry.status == WatchStatus.COMPLETED && it.entry.finishedAt != null }.sortedByDescending { it.entry.finishedAt }
-    if (done.isEmpty()) { EmptyState(t("Nada terminado ainda.")); return }
-    val byMonth = done.groupBy { YearMonth.from(Dates.of(it.entry.finishedAt!!)) }
-    LazyColumn(Modifier.fillMaxSize()) {
-        byMonth.forEach { (month, rows) ->
-            item(key = "m-$month") { SectionHeader(Dates.month(month.atDay(1)), rows.size) }
-            items(rows, key = { "h-${it.key}" }) { i ->
-                val k = coverKey("hist", i.key)
-                Row(
-                    Modifier.fillMaxWidth().pressable(onClick = { nav.detail(i.key, k) }, scaleTo = 0.98f).padding(horizontal = 20.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Cover(TmdbImages.poster(i.title?.posterPath, "w185"), 40.dp, color = i.title?.posterColor, sharedKey = k)
-                    Spacer(Modifier.width(14.dp))
-                    Column(Modifier.weight(1f)) {
-                        Text(i.title?.name ?: "…", style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                        Text(
-                            listOfNotNull(i.type.label, Dates.full(Dates.of(i.entry.finishedAt!!)), i.entry.timesWatched.takeIf { it > 1 }?.let { t("{0}ª vez", it) }).joinToString(" · "),
-                            style = Mono.style(12), color = p.textSecondary,
-                        )
-                    }
-                    if (i.entry.scoreRaw > 0) ScoreView(i.entry.scoreRaw, s.primaryScore, null, ScoreSize.Small)
-                }
-            }
+    val k = coverKey("hist", i.key)
+    Row(
+        Modifier.fillMaxWidth().pressable(onClick = { nav.detail(i.key, k) }, scaleTo = 0.98f).padding(horizontal = 20.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Cover(TmdbImages.poster(i.title?.posterPath, "w185"), 40.dp, color = i.title?.posterColor, sharedKey = k)
+        Spacer(Modifier.width(14.dp))
+        Column(Modifier.weight(1f)) {
+            Text(i.title?.name ?: "…", style = MaterialTheme.typography.bodyLarge, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                listOfNotNull(i.type.label, Dates.full(Dates.of(i.entry.finishedAt!!)), i.entry.timesWatched.takeIf { it > 1 }?.let { t("{0}ª vez", it) }).joinToString(" · "),
+                style = Mono.style(12), color = p.textSecondary,
+            )
         }
-        item { Spacer(Modifier.height(24.dp)) }
+        if (i.entry.scoreRaw > 0) ScoreView(i.entry.scoreRaw, s.primaryScore, null, ScoreSize.Small)
     }
 }

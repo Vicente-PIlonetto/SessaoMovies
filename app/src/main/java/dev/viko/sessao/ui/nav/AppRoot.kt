@@ -113,6 +113,7 @@ class Nav(private val c: NavHostController) {
     fun settings(section: String? = null) = c.navigate(if (section == null) "settings" else "settings/$section")
     fun profile(slug: String) = c.navigate("profile/${Uri.encode(slug)}")
     fun userSearch() = c.navigate("users")
+    fun customize() = c.navigate("customize")
 }
 
 private data class Tab(val route: String, val label: String, val icon: ImageVector, val selectedIcon: ImageVector)
@@ -322,6 +323,7 @@ private fun NavGraphBuilder.graph(nav: Nav) {
     screen("social") { dev.viko.sessao.ui.screens.SocialScreen(nav) }
     screen("you") { YouScreen(nav) }
     screen("users") { dev.viko.sessao.ui.screens.UserSearchScreen(nav) }
+    screen("customize") { dev.viko.sessao.ui.screens.CustomizeProfileScreen(nav) }
     screen("profile/{slug}") { dev.viko.sessao.ui.screens.ProfileScreen(nav, Uri.decode(it.arguments?.getString("slug").orEmpty())) }
     screen("search") { SearchScreen(nav) }
     screen("notifications") { NotificationsScreen(nav) }

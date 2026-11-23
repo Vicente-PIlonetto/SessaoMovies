@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.PersonSearch
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -140,7 +139,6 @@ fun SocialScreen(nav: Nav) {
         TopBar(t("Social")) {
             if (session != null) {
                 IconButton(onClick = nav::userSearch) { Icon(Icons.Outlined.PersonSearch, t("Buscar pessoas")) }
-                IconButton(onClick = { session?.username?.let { nav.profile(it) } }) { Icon(Icons.Outlined.AccountCircle, t("Meu perfil")) }
             }
         }
         if (session == null) {
@@ -299,7 +297,10 @@ fun ProfileScreen(nav: Nav, slug: String) {
                     u.about?.takeIf { it.isNotBlank() }?.let {
                         Text(it, style = MaterialTheme.typography.bodySmall, color = p.textSecondary, maxLines = 3, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 6.dp))
                     }
-                    if (!pr.isMe) {
+                    if (pr.isMe) {
+                        Spacer(Modifier.height(12.dp))
+                        OutlinedButton(onClick = nav::customize, shape = RoundedCornerShape(50)) { Text(t("Personalizar"), color = p.text) }
+                    } else {
                         Spacer(Modifier.height(12.dp))
                         if (pr.following) OutlinedButton(onClick = vm::toggleFollow, enabled = !busy, shape = RoundedCornerShape(50)) { Text(t("Seguindo"), color = p.text) }
                         else Button(

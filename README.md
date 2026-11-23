@@ -68,7 +68,7 @@ Filmes, séries, episódios, tempo assistido, nota média e como as suas notas s
 <tr>
 <td align="center"><img src="docs/img/icons/personalizar.svg" width="56" alt="" /></td>
 <td><b>Do seu jeito</b><br/>
-Tema claro, escuro ou preto, cor de destaque com o ícone combinando, e a ordem das categorias do Início. Cada título usa a cor do próprio pôster no progresso e na página dele.</td>
+Tema claro, escuro ou preto, cor de destaque com o ícone combinando, e a ordem das categorias do Início. No perfil, em Você: nome, bio, foto, cor (até em degradê), banner, fundo animado e seus títulos favoritos. Cada título usa a cor do próprio pôster no progresso e na página dele.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/offline.svg" width="56" alt="" /></td>

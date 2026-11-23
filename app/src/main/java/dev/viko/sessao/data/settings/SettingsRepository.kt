@@ -117,6 +117,7 @@ class SettingsRepository(private val context: Context) {
         val scheduleAll = booleanPreferencesKey("schedule_show_all")
         val lastRefresh = longPreferencesKey("last_refresh")
         val notifiedDay = stringPreferencesKey("notified_day")
+        val profileStyle = stringPreferencesKey("profile_style")
     }
 
     private fun statuses(raw: String?): List<WatchStatus>? = raw?.split(',')?.mapNotNull { WatchStatus.parse(it) }?.takeIf { it.isNotEmpty() }
@@ -150,6 +151,12 @@ class SettingsRepository(private val context: Context) {
     }
 
     suspend fun current(): Settings = settings.first()
+
+    val profileStyle: Flow<ProfileStyle> = context.dataStore.data.map { p ->
+        p[K.profileStyle]?.let { runCatching { json.decodeFromString(ProfileStyle.serializer(), it) }.getOrNull() } ?: ProfileStyle()
+    }
+
+    suspend fun setProfileStyle(v: ProfileStyle) = context.dataStore.edit { it[K.profileStyle] = json.encodeToString(ProfileStyle.serializer(), v) }
     val lastRefresh: Flow<Long> = context.dataStore.data.map { it[K.lastRefresh] ?: 0L }
 
     suspend fun setTheme(v: ThemeMode) = context.dataStore.edit { it[K.theme] = v.name }

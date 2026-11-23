@@ -11,6 +11,7 @@ import dev.viko.sessao.domain.Title
 import dev.viko.sessao.domain.WatchedEpisode
 import dev.viko.sessao.i18n.t
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -27,6 +28,7 @@ data class Backup(
     val watched: List<WatchedEpisode>,
     val titles: List<Title>,
     val settings: Settings,
+    val profile: dev.viko.sessao.data.settings.ProfileStyle? = null,
 )
 
 class BackupManager(private val context: Context, private val db: AppDatabase, private val settings: SettingsRepository) {
@@ -36,7 +38,10 @@ class BackupManager(private val context: Context, private val db: AppDatabase, p
         val entries = db.entries().all()
         val keys = entries.map { it.key }.toSet()
         val titles = db.titles().all().filter { it.key in keys }.map { basic(it) }
-        val b = Backup(createdAt = now(), entries = entries, watched = db.watched().all(), titles = titles, settings = settings.current().copy(tmdbKey = ""))
+        val b = Backup(
+            createdAt = now(), entries = entries, watched = db.watched().all(), titles = titles,
+            settings = settings.current().copy(tmdbKey = ""), profile = settings.profileStyle.first().copy(customAvatar = false),
+        )
         context.contentResolver.openOutputStream(uri)?.use { it.write(json.encodeToString(Backup.serializer(), b).toByteArray()) }
             ?: error(t("Não foi possível salvar o arquivo."))
     }
@@ -49,6 +54,7 @@ class BackupManager(private val context: Context, private val db: AppDatabase, p
         b.entries.forEach { db.entries().upsert(it) }
         if (b.watched.isNotEmpty()) db.watched().upsert(b.watched)
         settings.restore(b.settings)
+        b.profile?.let { settings.setProfileStyle(it) }
         b.entries.size
     }
 
