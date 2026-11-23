@@ -57,7 +57,7 @@ Busca de filmes e séries, os destaques da semana, o Top 10, populares, estreias
 <tr>
 <td align="center"><img src="docs/img/icons/letterboxd.svg" width="56" alt="" /></td>
 <td><b>Trakt e Letterboxd</b><br/>
-Entrando com a sua conta do Trakt, episódios e filmes vistos, notas e a lista Quero ver ficam iguais no Sessão e no Trakt, em qualquer aparelho. 
+Entrando com a sua conta do Trakt, episódios e filmes vistos, notas e a lista Quero ver ficam iguais no Sessão e no Trakt, em qualquer aparelho. A aba Social mostra o que as pessoas que você segue estão vendo, com o perfil de cada uma: números, o que viu por último e as notas. 
 E, com o seu nome de usuário do Letterboxd, os filmes que você registra lá entram aqui como vistos, com nota e data. Dá para importar o histórico inteiro e gerar um arquivo para levar o que você marcou aqui de volta para lá.</td>
 </tr>
 <tr>
