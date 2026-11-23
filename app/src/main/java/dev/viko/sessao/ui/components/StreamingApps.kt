@@ -22,6 +22,7 @@ object StreamingApps {
         "globoplay" to "com.globo.globotv",
         "apple tv plus" to "com.apple.atve.android.appletv",
         "apple tv+" to "com.apple.atve.android.appletv",
+        "apple tv" to "com.apple.atve.android.appletv",
         "paramount plus" to "com.cbs.app",
         "paramount+" to "com.cbs.app",
         "crunchyroll" to "com.crunchyroll.crunchyroid",
@@ -33,6 +34,8 @@ object StreamingApps {
 
     fun packageFor(p: Provider): String? {
         val n = p.name.trim().lowercase()
+        // Canais assinados dentro do Prime Video ("Apple TV Amazon Channel", "Paramount+ Amazon Channel").
+        if (n.endsWith("amazon channel")) return "com.amazon.avod.thirdpartyclient"
         return packages.firstOrNull { (k, _) -> n == k }?.second
             ?: packages.firstOrNull { (k, _) -> n.startsWith(k) }?.second
     }
