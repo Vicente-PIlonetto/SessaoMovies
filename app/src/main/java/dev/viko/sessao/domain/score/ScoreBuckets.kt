@@ -19,7 +19,7 @@ object ScoreBuckets {
         if (raw <= 0) return null
         val r = raw.coerceAtMost(100)
         val order = when (system) {
-            ScoreSystem.LETTERS -> LetterGrade.nearest(r).letter.ordinal
+            ScoreSystem.LETTERS -> Letter.of(r)!!.ordinal
             ScoreSystem.POINT_100 -> ((r - 1) / 10 + 1) * 10
             ScoreSystem.POINT_10, ScoreSystem.POINT_10_DECIMAL -> Scores.point10(r)
             ScoreSystem.STARS_5 -> ((Scores.starHalves(r) + 1) / 2).coerceIn(1, 5)

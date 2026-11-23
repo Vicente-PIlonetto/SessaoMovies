@@ -37,7 +37,7 @@ Um toque no +1 marca o próximo episódio e vira a temporada sozinho. Segurando 
 <tr>
 <td align="center"><img src="docs/img/icons/notas.svg" width="56" alt="" /></td>
 <td><b>Notas do seu jeito</b><br/>
-Letras (de F a A++, e o S para a nota máxima), 5 estrelas, carinhas coloridas (do vermelho de "Detestei" ao verde de "Adorei"), de 0 a 10 ou de 0 a 100. Dá para mostrar duas escalas ao mesmo tempo.</td>
+Letras (F, E, D, C, B, A e S, a nota máxima), 5 estrelas, carinhas coloridas (do vermelho de "Detestei" ao verde de "Adorei"), de 0 a 10 ou de 0 a 100. Dá para mostrar duas escalas ao mesmo tempo.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/agenda.svg" width="56" alt="" /></td>
@@ -78,7 +78,7 @@ Tudo que está na sua lista abre sem conexão, com os pôsteres guardados. Só a
 
 ## Como instalar
 
-1. Baixe o arquivo **Sessao.apk** na [página de versões](https://github.com/Vicente-PIlonetto/SessaoMovies/releases/latest).
+1. Baixe o arquivo **SessãoMovies.apk** na [página de versões](https://github.com/Vicente-PIlonetto/SessaoMovies/releases/latest).
 2. Abra o arquivo no celular. Se o Android pedir, permita **instalar apps desconhecidos** para o navegador ou para o app de arquivos.
 3. Abra o Sessão. Não tem login: tudo fica no seu celular.
 

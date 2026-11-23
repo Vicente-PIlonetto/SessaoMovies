@@ -16,7 +16,7 @@ object Scores {
             ScoreSystem.POINT_10 -> ScoreDisplay.Text("${point10(r)}")
             ScoreSystem.STARS_5 -> ScoreDisplay.Stars(starHalves(r))
             ScoreSystem.SMILEY_7 -> Bands.of(r)!!.let { ScoreDisplay.Face(it.value, it.face) }
-            ScoreSystem.LETTERS -> ScoreDisplay.Text(LetterGrade.nearest(r).label)
+            ScoreSystem.LETTERS -> ScoreDisplay.Text(Letter.of(r)!!.name)
         }
     }
 
@@ -38,7 +38,7 @@ object Scores {
 
     /**
      * Valor que o sistema grava ao escolher a opção mais próxima.
-     * Ex.: 72 em letras vira 71 (B−−); 72 em 5 estrelas vira 70 (3,5).
+     * Ex.: 72 em letras vira 70 (B); 72 em 5 estrelas vira 70 (3,5).
      */
     fun snap(raw: Int, system: ScoreSystem): Int {
         if (raw <= 0) return 0
@@ -48,7 +48,7 @@ object Scores {
             ScoreSystem.POINT_10 -> point10(r) * 10
             ScoreSystem.STARS_5 -> starHalves(r) * 10
             ScoreSystem.SMILEY_7 -> Bands.of(r)!!.mid
-            ScoreSystem.LETTERS -> LetterGrade.nearest(r).raw
+            ScoreSystem.LETTERS -> Letter.of(r)!!.raw
         }
     }
 

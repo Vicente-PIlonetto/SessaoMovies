@@ -20,37 +20,15 @@ object Bands {
     fun byValue(value: Int): Band? = all.firstOrNull { it.value == value }
 }
 
-enum class LetterModifier(val suffix: String) {
-    MINUS2("−−"), MINUS1("−"), NORMAL(""), PLUS1("+"), PLUS2("++");
-}
-
-/** Letras de F a A, cada uma com cinco níveis, e o S (a nota máxima, 10), sem níveis. */
-enum class Letter(val values: IntArray) {
-    F(intArrayOf(2, 6, 10, 14, 18)),
-    E(intArrayOf(21, 25, 29, 33, 37)),
-    D(intArrayOf(41, 44, 47, 50, 53)),
-    C(intArrayOf(56, 59, 62, 65, 68)),
-    B(intArrayOf(71, 74, 77, 80, 83)),
-    A(intArrayOf(85, 87, 89, 92, 94)),
-    S(intArrayOf(100, 100, 100, 100, 100));
-
-    /** O S é uma nota só: não tem − nem +. */
-    val single: Boolean get() = this == S
-
-    fun value(mod: LetterModifier): Int = values[mod.ordinal]
-    fun label(mod: LetterModifier): String = if (single) name else name + mod.suffix
-}
-
-data class LetterGrade(val letter: Letter, val modifier: LetterModifier) {
-    val raw: Int get() = letter.value(modifier)
-    val label: String get() = letter.label(modifier)
+/**
+ * Letras simples, sem + e −: cada uma grava um valor fixo (0–10: F 2, E 4, D 5, C 6, B 7, A 9, S 10).
+ * Notas de outra escala caem na letra mais próxima pelos limites [min].
+ */
+enum class Letter(val raw: Int, val min: Int) {
+    F(20, 1), E(40, 30), D(50, 45), C(60, 55), B(70, 65), A(90, 80), S(100, 95);
 
     companion object {
-        val all: List<LetterGrade> = Letter.entries.flatMap { l ->
-            if (l.single) listOf(LetterGrade(l, LetterModifier.NORMAL)) else LetterModifier.entries.map { LetterGrade(l, it) }
-        }
-
-        /** Grau mais próximo de um valor 0–100 (empate: o menor). */
-        fun nearest(raw: Int): LetterGrade = all.minWith(compareBy<LetterGrade> { kotlin.math.abs(it.raw - raw) }.thenBy { it.raw })
+        /** Letra de um valor 0–100 (0 = sem nota). */
+        fun of(raw: Int): Letter? = if (raw <= 0) null else entries.last { raw.coerceAtMost(100) >= it.min }
     }
 }
