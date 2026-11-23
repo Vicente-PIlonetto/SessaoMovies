@@ -60,8 +60,8 @@ android {
     }
 }
 
-// Nome do APK: Sessao-<versão>-release.apk
-base.archivesName.set("Sessao-${android.defaultConfig.versionName}")
+// Nome do APK: SessãoMovies-<versão>-release.apk
+base.archivesName.set("SessãoMovies-${android.defaultConfig.versionName}")
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")

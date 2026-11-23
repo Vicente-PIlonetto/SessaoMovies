@@ -31,7 +31,7 @@ O app aceita a chave v3 (vai como `api_key`) ou o token de leitura v4 (vai no ca
 Instalar no celular com o cabo:
 
 ```sh
-adb install -r app/build/outputs/apk/debug/Sessao-*-debug.apk
+adb install -r app/build/outputs/apk/debug/SessãoMovies-*-debug.apk
 ```
 
 ## APK de release
@@ -40,7 +40,7 @@ adb install -r app/build/outputs/apk/debug/Sessao-*-debug.apk
 ./gradlew assembleRelease
 ```
 
-O arquivo sai em `app/build/outputs/apk/release/Sessao-<versão>-release.apk`, minificado com o R8.
+O arquivo sai em `app/build/outputs/apk/release/SessãoMovies-<versão>-release.apk`, minificado com o R8.
 Como o app é distribuído por APK no GitHub (e não na Play Store), o release é assinado com a chave de debug,
 para quem tem o app instalar a versão nova por cima.
 

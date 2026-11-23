@@ -43,7 +43,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp app/build/outputs/apk/release/Sessao-*-release.apk Sessao.apk
-          gh release create "$GITHUB_REF_NAME" Sessao.apk \
+          cp app/build/outputs/apk/release/SessãoMovies-*-release.apk SessãoMovies.apk
+          # O "#..." é o nome exibido na página da versão.
+          gh release create "$GITHUB_REF_NAME" "SessãoMovies.apk#SessãoMovies.apk" \
             --title "Sessão ${GITHUB_REF_NAME#v}" \
             --generate-notes
