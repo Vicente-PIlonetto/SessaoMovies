@@ -16,10 +16,10 @@ O que você está vendo, em que episódio parou e onde dá para assistir no Bras
 <br/>
 
 <p align="center">
-  <img src="docs/img/inicio.png" width="23%" alt="Início" />
-  <img src="docs/img/detalhe.png" width="23%" alt="Página de um título" />
-  <img src="docs/img/agenda.png" width="23%" alt="Agenda da semana" />
-  <img src="docs/img/voce.png" width="23%" alt="Seus números" />
+  <img src="docs/img/inicio.jpg" width="23%" alt="Início" />
+  <img src="docs/img/descobrir.jpg" width="23%" alt="Descobrir" />
+  <img src="docs/img/agenda.jpg" width="23%" alt="Agenda da semana" />
+  <img src="docs/img/voce.jpg" width="23%" alt="Seus números" />
 </p>
 
 ## Por que o Sessão
