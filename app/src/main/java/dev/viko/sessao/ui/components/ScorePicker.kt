@@ -170,12 +170,22 @@ private fun Cell(text: String, selected: Boolean, special: Boolean = false, modi
 private fun LetterPicker(picked: PickedScore, onPick: (PickedScore) -> Unit) {
     var row by remember { mutableStateOf(if (picked.raw > 0) LetterGrade.nearest(picked.raw).letter else null) }
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp), modifier = Modifier.fillMaxWidth()) {
-        Letter.entries.forEach { l -> Cell(l.name, selected = row == l, modifier = Modifier.weight(1f)) { row = l } }
+        Letter.entries.forEach { l ->
+            Cell(l.name, selected = row == l, special = l.single && row == l, modifier = Modifier.weight(1f)) {
+                row = l
+                if (l.single) onPick(PickedScore(l.value(LetterModifier.NORMAL)))
+            }
+        }
     }
     Spacer(Modifier.height(10.dp))
     val letter = row ?: return
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
-        LetterModifier.entries.forEach { m ->
+        if (letter.single) {
+            // S é a nota máxima (10): um toque e pronto.
+            Cell(t("S · nota máxima"), picked.raw == letter.value(LetterModifier.NORMAL), special = true, modifier = Modifier.weight(1f)) {
+                onPick(PickedScore(letter.value(LetterModifier.NORMAL)))
+            }
+        } else LetterModifier.entries.forEach { m ->
             val raw = letter.value(m)
             Cell(if (m == LetterModifier.NORMAL) letter.name else letter.name + m.suffix, picked.raw == raw, modifier = Modifier.weight(1f)) {
                 onPick(PickedScore(raw))

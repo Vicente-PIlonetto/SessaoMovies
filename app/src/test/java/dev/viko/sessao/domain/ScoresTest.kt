@@ -15,6 +15,10 @@ class ScoresTest {
         assertEquals("4,5", Scores.text(85, ScoreSystem.STARS_5))
         assertEquals("A−−", Scores.text(85, ScoreSystem.LETTERS))
         assertEquals("A", Scores.text(89, ScoreSystem.LETTERS))
+        // S é a nota máxima (10): de 98 a 100 nas letras.
+        assertEquals("S", Scores.text(100, ScoreSystem.LETTERS))
+        assertEquals("S", Scores.text(98, ScoreSystem.LETTERS))
+        assertEquals("A++", Scores.text(96, ScoreSystem.LETTERS))
         assertEquals(ScoreDisplay.Face(6, "Gostei muito"), Scores.display(89, ScoreSystem.SMILEY_7))
         assertEquals(ScoreDisplay.None, Scores.display(0, ScoreSystem.LETTERS))
     }
@@ -24,7 +28,8 @@ class ScoresTest {
         assertEquals(70, Scores.snap(72, ScoreSystem.STARS_5))
         assertEquals(70, Scores.snap(72, ScoreSystem.POINT_10))
         assertEquals(77, Scores.snap(72, ScoreSystem.SMILEY_7))
-        assertEquals(94, Scores.snap(100, ScoreSystem.LETTERS))
+        assertEquals(100, Scores.snap(100, ScoreSystem.LETTERS))
+        assertEquals(94, Scores.snap(95, ScoreSystem.LETTERS))
     }
 
     @Test fun letterboxdStars() {

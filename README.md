@@ -37,7 +37,7 @@ Um toque no +1 marca o próximo episódio e vira a temporada sozinho. Segurando 
 <tr>
 <td align="center"><img src="docs/img/icons/notas.svg" width="56" alt="" /></td>
 <td><b>Notas do seu jeito</b><br/>
-Letras (de F a A++), 5 estrelas, carinhas coloridas (do vermelho de "Detestei" ao verde de "Adorei"), de 0 a 10 ou de 0 a 100. Dá para mostrar duas escalas ao mesmo tempo.</td>
+Letras (de F a A++, e o S para a nota máxima), 5 estrelas, carinhas coloridas (do vermelho de "Detestei" ao verde de "Adorei"), de 0 a 10 ou de 0 a 100. Dá para mostrar duas escalas ao mesmo tempo.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/agenda.svg" width="56" alt="" /></td>
