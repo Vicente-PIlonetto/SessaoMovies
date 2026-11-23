@@ -61,7 +61,7 @@ class TraktRepository(
                     val t = res.body() ?: return false
                     store.save(TraktSession(t.accessToken, t.refreshToken, (t.createdAt + t.expiresIn) * 1000))
                     runCatching { client.call { me() } }.getOrNull()?.let { u ->
-                        store.save(store.load()!!.copy(username = u.username, name = u.name, avatar = u.images?.avatar?.full))
+                        store.save(store.load()!!.copy(username = u.username, name = u.name, avatar = u.images?.avatar?.full, slug = u.ids.slug.orEmpty()))
                     }
                     _session.value = store.load()
                     // Primeira sincronização manda tudo o que já está no app.
@@ -95,11 +95,20 @@ class TraktRepository(
         _session.value = store.load()
     }
 
+    /** Atualiza nome, foto e slug da conta (o perfil pode mudar no site). */
+    suspend fun refreshProfile() {
+        val s = store.load() ?: return
+        val u = runCatching { client.call { me() } }.getOrNull() ?: return
+        store.save(s.copy(username = u.username, name = u.name, avatar = u.images?.avatar?.full, slug = u.ids.slug.orEmpty()))
+        _session.value = store.load()
+    }
+
     // ---------- Sincronização ----------
 
     suspend fun sync(): TraktSyncResult = mutex.withLock {
         if (store.load() == null) throw TraktError.LoggedOut()
         ensureFresh()
+        refreshProfile()
         val started = now()
         val since = lastSync
         val pulledKeys = mutableSetOf<TitleKey>()

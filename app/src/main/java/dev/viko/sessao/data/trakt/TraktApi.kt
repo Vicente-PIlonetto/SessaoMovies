@@ -144,6 +144,8 @@ data class TraktSession(
     val username: String = "",
     val name: String? = null,
     val avatar: String? = null,
+    /** Nome usado nos endereços do Trakt (pode ser diferente do nome de usuário). */
+    val slug: String = "",
 )
 
 /** Guarda a sessão do Trakt cifrada com AES-GCM, com a chave no Android Keystore. */

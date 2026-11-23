@@ -78,6 +78,12 @@ class SocialRepository(private val trakt: TraktRepository, private val titles: T
     private val client get() = trakt.client
     val me: String? get() = trakt.session.value?.username
 
+    /** É a minha conta? Compara com o nome de usuário e com o slug. */
+    fun isMe(slug: String): Boolean {
+        val s = trakt.session.value ?: return false
+        return slug.equals("me", true) || slug.equals(s.username, true) || (s.slug.isNotBlank() && slug.equals(s.slug, true))
+    }
+
     suspend fun following(): List<TraktUser> = client.call { following("me") }.map { it.user }.filter { !it.deleted() }
 
     /** Feed montado com o histórico de cada pessoa que eu sigo (o feed pronto do Trakt é de acesso restrito). */
@@ -98,9 +104,11 @@ class SocialRepository(private val trakt: TraktRepository, private val titles: T
     suspend fun search(query: String): List<TraktUser> =
         client.call { searchUsers(query.trim()) }.mapNotNull { it.user }.filter { !it.deleted() }
 
-    suspend fun profile(slug: String): Profile {
+    suspend fun profile(requested: String): Profile {
+        val isMe = isMe(requested)
+        // A própria conta sempre por "me": o nome de usuário pode não servir no endereço.
+        val slug = if (isMe) "me" else requested
         val user = client.call { user(slug) }
-        val isMe = slug.equals(me, ignoreCase = true)
         if (user.private && !isMe) return Profile(user, null, emptyList(), emptyList(), isMe, followsHim(slug))
         val stats = runCatching { client.call { stats(slug) } }.getOrNull()
         val history = runCatching { client.call { userHistory(slug, 20) } }.getOrDefault(emptyList())
