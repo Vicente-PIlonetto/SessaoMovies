@@ -32,6 +32,7 @@ data class RatingItem(
     @SerialName("rated_at") val ratedAt: String? = null,
     val rating: Int = 0,
     val type: String = "",
+    val episode: TraktEpisode? = null,
     val show: TraktShow? = null,
     val movie: TraktMovie? = null,
 )
@@ -61,11 +62,31 @@ data class UserImages(val avatar: AvatarImage? = null)
 data class TraktUser(
     val username: String = "",
     val name: String? = null,
+    val about: String? = null,
+    val location: String? = null,
+    @SerialName("joined_at") val joinedAt: String? = null,
     val private: Boolean = false,
     val vip: Boolean = false,
     val ids: TraktIds = TraktIds(),
     val images: UserImages? = null,
 )
+
+@Serializable
+data class StatsBlock(val plays: Int = 0, val watched: Int = 0, val minutes: Long = 0, val ratings: Int = 0)
+
+@Serializable
+data class RatingsStats(val total: Int = 0)
+
+@Serializable
+data class UserStats(
+    val movies: StatsBlock = StatsBlock(),
+    val shows: StatsBlock = StatsBlock(),
+    val episodes: StatsBlock = StatsBlock(),
+    val ratings: RatingsStats = RatingsStats(),
+)
+
+@Serializable
+data class UserSearchResult(val type: String = "", val user: TraktUser? = null)
 
 @Serializable
 data class FollowItem(@SerialName("followed_at") val followedAt: String? = null, val user: TraktUser = TraktUser())

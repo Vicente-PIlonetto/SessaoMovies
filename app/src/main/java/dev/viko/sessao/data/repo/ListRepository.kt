@@ -152,12 +152,19 @@ class ListRepository(private val db: AppDatabase) {
         return e
     }
 
-    /** Aplica as regras automáticas depois de mudar episódios. */
+    /** Aplica as regras automáticas depois de mudar episódios. Só vale para séries. */
     suspend fun recompute(key: TitleKey) {
+        if (key.type != MediaType.TV) return
         val e = db.entries().get(key.type, key.id) ?: return
         val title = db.titles().get(key.type, key.id) ?: return
         val watched = db.watched().get(key.id, e.cycle).map { it.ep }
         val main = Progress.watchedMain(watched, title.seasons)
+        // Marcada como Terminado antes de as temporadas chegarem: agora marca todos os episódios.
+        if (e.status == WatchStatus.COMPLETED && main == 0 && title.totalEpisodes > 0) {
+            val t = now()
+            db.watched().upsert(Progress.allEpisodes(title.seasons).map { WatchedEpisode(key.id, it.season, it.episode, e.cycle, t) })
+            return
+        }
         val remaining = Progress.remaining(watched, title.seasons, title.lastAired?.ep, title.ended)
         val status = StatusRules.afterProgress(e.status, main, remaining, title.totalEpisodes, title.ended)
         db.entries().upsert(withStatus(e, status))

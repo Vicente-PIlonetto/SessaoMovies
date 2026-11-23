@@ -165,6 +165,21 @@ class TitleRepository(
         }
     }
 
+    /** Nome em português e pôster de um título, para o feed e os perfis. Usa o Room e um cache em memória. */
+    data class Basic(val name: String, val posterPath: String?, val posterColor: Int?)
+    private val basicCache = ConcurrentHashMap<TitleKey, Basic>()
+
+    suspend fun basic(key: TitleKey, fallbackName: String?): Basic {
+        basicCache[key]?.let { return it }
+        db.titles().get(key.type, key.id)?.let { t -> return Basic(t.name, t.posterPath, t.posterColor).also { basicCache[key] = it } }
+        val b = runCatching {
+            if (key.type == MediaType.MOVIE) tmdb.call { movieBasic(key.id) }.let { Basic(it.title, it.posterPath, null) }
+            else tmdb.call { tvBasic(key.id) }.let { Basic(it.name, it.posterPath, null) }
+        }.getOrNull() ?: return Basic(fallbackName.orEmpty(), null, null)
+        basicCache[key] = b
+        return b
+    }
+
     private val genreCache = ConcurrentHashMap<MediaType, List<Pair<Int, String>>>()
     suspend fun genres(type: MediaType): List<Pair<Int, String>> =
         genreCache[type] ?: tmdb.call { genres(type.path) }.genres.map { it.id to it.name }.also { genreCache[type] = it }

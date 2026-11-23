@@ -30,10 +30,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Explore
+import androidx.compose.material.icons.outlined.Group
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Button
@@ -109,6 +111,9 @@ class Nav(private val c: NavHostController) {
     fun search() = c.navigate("search")
     fun notifications() = c.navigate("notifications")
     fun settings(section: String? = null) = c.navigate(if (section == null) "settings" else "settings/$section")
+    fun profile(slug: String) = c.navigate("profile/${Uri.encode(slug)}")
+    fun userSearch() = c.navigate("users")
+    fun customize() = c.navigate("customize")
 }
 
 private data class Tab(val route: String, val label: String, val icon: ImageVector, val selectedIcon: ImageVector)
@@ -117,6 +122,7 @@ private val tabs = listOf(
     Tab("home", t("Início"), Icons.Outlined.Home, Icons.Filled.Home),
     Tab("schedule", t("Agenda"), Icons.Outlined.CalendarToday, Icons.Filled.CalendarToday),
     Tab("discover", t("Descobrir"), Icons.Outlined.Explore, Icons.Filled.Explore),
+    Tab("social", t("Social"), Icons.Outlined.Group, Icons.Filled.Group),
     Tab("you", t("Você"), Icons.Outlined.Person, Icons.Filled.Person),
 )
 private val tabRoutes = tabs.map { it.route }.toSet()
@@ -314,7 +320,11 @@ private fun NavGraphBuilder.graph(nav: Nav) {
     screen("home") { HomeScreen(nav) }
     screen("schedule") { ScheduleScreen(nav) }
     screen("discover") { DiscoverScreen(nav) }
+    screen("social") { dev.viko.sessao.ui.screens.SocialScreen(nav) }
     screen("you") { YouScreen(nav) }
+    screen("users") { dev.viko.sessao.ui.screens.UserSearchScreen(nav) }
+    screen("customize") { dev.viko.sessao.ui.screens.CustomizeProfileScreen(nav) }
+    screen("profile/{slug}") { dev.viko.sessao.ui.screens.ProfileScreen(nav, Uri.decode(it.arguments?.getString("slug").orEmpty())) }
     screen("search") { SearchScreen(nav) }
     screen("notifications") { NotificationsScreen(nav) }
     screen("settings") { SettingsScreen(nav) }
