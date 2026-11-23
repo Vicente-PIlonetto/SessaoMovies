@@ -138,7 +138,7 @@ class DetailViewModel(private val c: AppContainer, val key: TitleKey) : ViewMode
         try {
             c.titles.refresh(key)
             extras.value = c.titles.extras(key)
-            if (c.lists.get(key) != null) { c.lists.afterRefresh(key); c.lists.recompute(key) }
+            if (key.type == MediaType.TV && c.lists.get(key) != null) { c.lists.afterRefresh(key); c.lists.recompute(key) }
             error.value = null
         } catch (e: Exception) {
             // Com o título salvo, a tela abre offline; o erro só aparece se não houver nada.
