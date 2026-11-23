@@ -28,6 +28,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.Code
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -489,6 +492,9 @@ private fun BackupSection(onMessage: (String) -> Unit) {
     }
 }
 
+private const val DEV_NAME = "Vicente Pilonetto"
+private const val DEV_URL = "https://github.com/Vicente-PIlonetto"
+
 @Composable
 private fun AboutSection() {
     val p = AppTheme.palette
@@ -501,7 +507,22 @@ private fun AboutSection() {
             Spacer(Modifier.height(8.dp))
             Text(t("Watchlist de filmes e séries: o que estou vendo, em que episódio parei e onde dá para assistir no Brasil."), style = MaterialTheme.typography.bodyMedium)
         }
-        LinkRow(t("Código-fonte")) { open(BuildConfig.REPO_URL) }
+    }
+    Group(t("Desenvolvido por")) {
+        Row(
+            Modifier.fillMaxWidth().clickable { open(DEV_URL) }.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage("$DEV_URL.png?size=160", DEV_NAME, modifier = Modifier.size(44.dp).clip(CircleShape).background(p.background))
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(DEV_NAME, style = MaterialTheme.typography.titleMedium)
+                Text("github.com/Vicente-PIlonetto", style = MaterialTheme.typography.bodySmall, color = p.textSecondary)
+            }
+            Icon(Icons.AutoMirrored.Outlined.OpenInNew, null, tint = p.textTertiary, modifier = Modifier.size(18.dp))
+        }
+        LinkRow(t("Perfil no GitHub"), icon = Icons.Outlined.Person) { open(DEV_URL) }
+        LinkRow(t("Código-fonte do Sessão"), icon = Icons.Outlined.Code) { open(BuildConfig.REPO_URL) }
     }
     Group(t("Créditos")) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
