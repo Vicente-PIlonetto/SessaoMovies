@@ -615,6 +615,7 @@ private fun AboutSection() {
         }
         LinkRow(t("Perfil no GitHub"), icon = Icons.Outlined.Person) { open(DEV_URL) }
         LinkRow(t("Código-fonte do Sessão"), icon = Icons.Outlined.Code) { open(BuildConfig.REPO_URL) }
+        dev.viko.sessao.ui.components.PixDonateRow()
     }
     Group(t("Créditos")) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {

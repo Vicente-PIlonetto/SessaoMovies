@@ -16,6 +16,10 @@
    TMDB_API_KEY=sua_chave_v3_aqui
    # Opcional: login e sincronização com o Trakt
    TRAKT_CLIENT_ID=client_id_do_seu_app_no_trakt
+   # Opcional: doação por Pix na tela Sobre (sem a chave, o botão não aparece)
+   PIX_KEY=chave_aleatoria_do_pix
+   PIX_NAME=Nome do recebedor
+   PIX_CITY=Cidade
    ```
 
 O `local.properties` está no `.gitignore`: a chave nunca vai para o Git. Ela entra no APK pelo `BuildConfig.TMDB_API_KEY`.
@@ -57,7 +61,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-As chaves vêm dos secrets `TMDB_API_KEY` e `TRAKT_CLIENT_ID` do repositório (*Settings > Secrets and variables > Actions*).
+As chaves vêm dos secrets `TMDB_API_KEY`, `TRAKT_CLIENT_ID`, `PIX_KEY`, `PIX_NAME` e `PIX_CITY` do repositório (*Settings > Secrets and variables > Actions*).
 Antes de criar a tag, suba o `versionCode` e o `versionName` em `app/build.gradle.kts`.
 
 ## Organização do código

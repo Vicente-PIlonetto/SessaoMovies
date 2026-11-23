@@ -16,6 +16,7 @@ serialization = "1.8.1"
 coroutines = "1.10.2"
 coil = "3.2.0"
 palette = "1.0.0"
+zxing = "3.5.3"
 junit = "4.13.2"
 splashscreen = "1.0.1"
 
@@ -27,6 +28,7 @@ androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-ru
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-palette = { module = "androidx.palette:palette-ktx", version.ref = "palette" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
