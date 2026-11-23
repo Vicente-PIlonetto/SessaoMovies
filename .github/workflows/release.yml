@@ -38,6 +38,9 @@ jobs:
         env:
           TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           TRAKT_CLIENT_ID: ${{ secrets.TRAKT_CLIENT_ID }}
+          PIX_KEY: ${{ secrets.PIX_KEY }}
+          PIX_NAME: ${{ secrets.PIX_NAME }}
+          PIX_CITY: ${{ secrets.PIX_CITY }}
         run: ./gradlew assembleRelease --no-daemon
 
       - name: Criar a versão
