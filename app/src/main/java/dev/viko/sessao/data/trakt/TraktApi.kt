@@ -47,9 +47,16 @@ interface TraktService {
     @POST("sync/ratings") suspend fun addRatings(@Body body: SyncBody): retrofit2.Response<Unit>
     @POST("sync/watchlist") suspend fun addWatchlist(@Body body: SyncBody): retrofit2.Response<Unit>
 
-    // Social (etapa 2)
-    @GET("users/{user}/following") suspend fun following(@Path("user") user: String = "me"): List<FollowItem>
+    // Social
+    @GET("users/{user}") suspend fun user(@Path("user") user: String, @Query("extended") extended: String = "full"): TraktUser
+    @GET("users/{user}/stats") suspend fun stats(@Path("user") user: String): UserStats
+    @GET("users/{user}/following") suspend fun following(@Path("user") user: String = "me", @Query("extended") extended: String = "full"): List<FollowItem>
+    @GET("users/{user}/followers") suspend fun followers(@Path("user") user: String = "me", @Query("extended") extended: String = "full"): List<FollowItem>
     @GET("users/{user}/history") suspend fun userHistory(@Path("user") user: String, @Query("limit") limit: Int = 20): List<HistoryItem>
+    @GET("users/{user}/ratings/{type}") suspend fun userRatings(@Path("user") user: String, @Path("type") type: String = "all", @Query("limit") limit: Int = 20): List<RatingItem>
+    @GET("search/user") suspend fun searchUsers(@Query("query") query: String, @Query("extended") extended: String = "full"): List<UserSearchResult>
+    @POST("users/{user}/follow") suspend fun follow(@Path("user") user: String): retrofit2.Response<Unit>
+    @retrofit2.http.DELETE("users/{user}/follow") suspend fun unfollow(@Path("user") user: String): retrofit2.Response<Unit>
 }
 
 /** Erros do Trakt já com a mensagem da tela. */

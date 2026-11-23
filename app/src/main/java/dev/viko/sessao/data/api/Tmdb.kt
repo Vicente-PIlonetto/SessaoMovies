@@ -33,6 +33,10 @@ interface TmdbService {
     @GET("tv/{id}")
     suspend fun tvBasic(@Path("id") id: Int): TvDetailDto
 
+    /** Detalhe do filme sem extras (nome e pôster para o feed). */
+    @GET("movie/{id}")
+    suspend fun movieBasic(@Path("id") id: Int): MovieDetailDto
+
     /** Só a sinopse em inglês, quando não há em português. */
     @GET("movie/{id}")
     suspend fun movieIn(@Path("id") id: Int, @Query("language") language: String): MovieDetailDto
