@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="340" viewBox="0 0 1200 340" fill="none">
+  <defs><clipPath id="clip"><rect width="1200" height="340" rx="28"/></clipPath></defs>
+  <g clip-path="url(#clip)">
+    <rect width="1200" height="340" fill="#1B1A18"/>
+    <g transform="translate(640 150) rotate(-12)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#D98A66"/>
+<clipPath id="c640150"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c640150)">
+<circle cx="0" cy="21.599999999999998" r="38.4" fill="#6FAEE8"/>
+<rect x="-60.0" y="21.599999999999998" width="120" height="180" fill="#AD96E6"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(770 175) rotate(7)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#6FAEE8"/>
+<clipPath id="c770175"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c770175)">
+<polygon points="-60.0,90.0 -12.0,-9.0 24.0,45.0 45.6,3.6 60.0,36.0 60.0,90.0" fill="#E58AAE"/>
+<circle cx="26.4" cy="-45.0" r="12.0" fill="#7CC08E"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(900 140) rotate(-6)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#E2B252"/>
+<clipPath id="c900140"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c900140)">
+<rect x="-38.4" y="-32.4" width="76.8" height="64.8" rx="8" fill="#AD96E6"/>
+<polygon points="-8.4,-14.4 14.399999999999999,0 -8.4,14.4" fill="#1B1A18"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(1030 185) rotate(10)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#AD96E6"/>
+<clipPath id="c1030185"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c1030185)">
+<rect x="-172.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-144.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-116.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-88.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-60.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-32.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="-4.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="24.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="52.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+<rect x="80.0" y="-180" width="12" height="360" fill="#D98A66" transform="rotate(28)"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(1150 145) rotate(-9)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#7CC08E"/>
+<clipPath id="c1150145"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c1150145)">
+<circle cx="-60.0" cy="90.0" r="66.0" fill="#F0CC4F"/>
+<circle cx="-60.0" cy="90.0" r="48.0" fill="#7CC08E"/>
+<circle cx="-60.0" cy="90.0" r="30.0" fill="#6FAEE8"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(705 330) rotate(4)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#EC6F82"/>
+<clipPath id="c705330"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c705330)">
+<circle cx="-40.0" cy="-66.0" r="6" fill="#AD96E6"/>
+<circle cx="-40.0" cy="-39.6" r="6" fill="#F0CC4F"/>
+<circle cx="-40.0" cy="-13.200000000000003" r="6" fill="#AD96E6"/>
+<circle cx="-40.0" cy="13.200000000000003" r="6" fill="#F0CC4F"/>
+<circle cx="-40.0" cy="39.599999999999994" r="6" fill="#AD96E6"/>
+<circle cx="-40.0" cy="66.0" r="6" fill="#F0CC4F"/>
+<circle cx="-13.333333333333332" cy="-66.0" r="6" fill="#F0CC4F"/>
+<circle cx="-13.333333333333332" cy="-39.6" r="6" fill="#AD96E6"/>
+<circle cx="-13.333333333333332" cy="-13.200000000000003" r="6" fill="#F0CC4F"/>
+<circle cx="-13.333333333333332" cy="13.200000000000003" r="6" fill="#AD96E6"/>
+<circle cx="-13.333333333333332" cy="39.599999999999994" r="6" fill="#F0CC4F"/>
+<circle cx="-13.333333333333332" cy="66.0" r="6" fill="#AD96E6"/>
+<circle cx="13.333333333333336" cy="-66.0" r="6" fill="#AD96E6"/>
+<circle cx="13.333333333333336" cy="-39.6" r="6" fill="#F0CC4F"/>
+<circle cx="13.333333333333336" cy="-13.200000000000003" r="6" fill="#AD96E6"/>
+<circle cx="13.333333333333336" cy="13.200000000000003" r="6" fill="#F0CC4F"/>
+<circle cx="13.333333333333336" cy="39.599999999999994" r="6" fill="#AD96E6"/>
+<circle cx="13.333333333333336" cy="66.0" r="6" fill="#F0CC4F"/>
+<circle cx="40.0" cy="-66.0" r="6" fill="#F0CC4F"/>
+<circle cx="40.0" cy="-39.6" r="6" fill="#AD96E6"/>
+<circle cx="40.0" cy="-13.200000000000003" r="6" fill="#F0CC4F"/>
+<circle cx="40.0" cy="13.200000000000003" r="6" fill="#AD96E6"/>
+<circle cx="40.0" cy="39.599999999999994" r="6" fill="#F0CC4F"/>
+<circle cx="40.0" cy="66.0" r="6" fill="#AD96E6"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(840 345) rotate(-8)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#4FD1BE"/>
+<clipPath id="c840345"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c840345)">
+<circle cx="-60.0" cy="90.0" r="66.0" fill="#EC6F82"/>
+<circle cx="-60.0" cy="90.0" r="48.0" fill="#4FD1BE"/>
+<circle cx="-60.0" cy="90.0" r="30.0" fill="#7CC08E"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(975 335) rotate(6)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#F0CC4F"/>
+<clipPath id="c975335"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c975335)">
+<circle cx="0" cy="21.599999999999998" r="38.4" fill="#D98A66"/>
+<rect x="-60.0" y="21.599999999999998" width="120" height="180" fill="#6FAEE8"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+<g transform="translate(1110 350) rotate(-5)">
+<rect x="-60.0" y="-90.0" width="120" height="180" rx="12" fill="#E58AAE"/>
+<clipPath id="c1110350"><rect x="-60.0" y="-90.0" width="120" height="180" rx="12"/></clipPath>
+<g clip-path="url(#c1110350)">
+<polygon points="-60.0,90.0 -12.0,-9.0 24.0,45.0 45.6,3.6 60.0,36.0 60.0,90.0" fill="#7CC08E"/>
+<circle cx="26.4" cy="-45.0" r="12.0" fill="#EC6F82"/>
+</g>
+<rect x="-48.0" y="60.0" width="66.0" height="7" rx="3.5" fill="#1B1A18" fill-opacity="0.55"/>
+<rect x="-48.0" y="72.0" width="38.4" height="6" rx="3" fill="#1B1A18" fill-opacity="0.4"/>
+</g>
+    <rect width="560" height="340" fill="#1B1A18"/>
+    <rect x="64" y="104" width="88" height="62" rx="12" stroke="#EDE8DF" stroke-width="7" fill="none"/>
+    <path d="M90 186h36" stroke="#EDE8DF" stroke-width="7" stroke-linecap="round"/>
+    <path d="M100 120l26 15-26 15z" fill="#E2B252" stroke="#E2B252" stroke-width="3" stroke-linejoin="round"/>
+    <text x="64" y="252" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="64" font-weight="600" fill="#EDE8DF">Sessão</text>
+    <text x="66" y="290" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="22" fill="#8A847A">filmes e séries, episódio por episódio</text>
+  </g>
+</svg>
