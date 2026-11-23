@@ -15,6 +15,8 @@ val localProps = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 val tmdbKey: String = (localProps.getProperty("TMDB_API_KEY") ?: System.getenv("TMDB_API_KEY") ?: "").trim()
+// Client ID do app no Trakt (login e sincronização). Também fica fora do Git.
+val traktClientId: String = (localProps.getProperty("TRAKT_CLIENT_ID") ?: System.getenv("TRAKT_CLIENT_ID") ?: "").trim()
 
 android {
     namespace = "dev.viko.sessao"
@@ -28,6 +30,7 @@ android {
         versionName = "1.0.0"
         resourceConfigurations += listOf("pt-rBR", "pt")
         buildConfigField("String", "TMDB_API_KEY", "\"$tmdbKey\"")
+        buildConfigField("String", "TRAKT_CLIENT_ID", "\"$traktClientId\"")
         buildConfigField("String", "REPO_URL", "\"https://github.com/Vicente-PIlonetto/SessaoMovies\"")
     }
 

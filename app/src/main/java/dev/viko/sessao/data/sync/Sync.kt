@@ -56,6 +56,7 @@ class RefreshManager(
     private val titles: TitleRepository,
     private val letterboxd: LetterboxdRepository,
     private val settings: SettingsRepository,
+    private val trakt: dev.viko.sessao.data.trakt.TraktRepository,
 ) {
     suspend fun refreshAll(notify: Boolean): RefreshResult {
         val s = settings.current()
@@ -108,6 +109,10 @@ class RefreshManager(
             }
         }
 
+        // Trakt antes do Letterboxd: o que vier de lá já entra na lista.
+        if (trakt.session.value != null) {
+            runCatching { trakt.sync() }.onFailure { if (firstError == null) firstError = it.message }
+        }
         if (s.letterboxdSync && s.letterboxdUser.isNotBlank()) {
             runCatching { letterboxd.syncFeed() }.onFailure { if (firstError == null) firstError = it.message }
         }

@@ -41,6 +41,7 @@ import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.LiveTv
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Upload
@@ -69,6 +70,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import dev.viko.sessao.BuildConfig
 import dev.viko.sessao.data.api.TmdbImages
@@ -106,6 +108,7 @@ enum class SettingsSection(val route: String, val title: String, val icon: Image
     CATEGORIES("categorias", t("Ordem das categorias"), Icons.AutoMirrored.Outlined.ViewList, 0xFF6FD07A),
     SERVICES("servicos", t("Meus serviços de streaming"), Icons.Outlined.LiveTv, 0xFFEC6F82),
     NOTIFICATIONS("notificacoes", t("Notificações"), Icons.Outlined.Notifications, 0xFF4FB3F0),
+    TRAKT("trakt", "Trakt", Icons.Outlined.People, 0xFFE58AAE),
     LETTERBOXD("letterboxd", "Letterboxd", Icons.Outlined.Sync, 0xFF4FD1BE),
     TMDB("tmdb", t("Chave do TMDB"), Icons.Outlined.Key, 0xFFAD96E6),
     BACKUP("backup", t("Backup"), Icons.Outlined.CloudSync, 0xFF8FA3B8),
@@ -118,6 +121,7 @@ private fun summary(k: SettingsSection, s: Settings): String = when (k) {
     SettingsSection.CATEGORIES -> t("Início e lista completa")
     SettingsSection.SERVICES -> if (s.myServices.isEmpty()) t("Nenhum marcado") else s.myServices.take(3).joinToString(", ") { it.name } + if (s.myServices.size > 3) "…" else ""
     SettingsSection.NOTIFICATIONS -> listOf(s.notifyEpisodes, s.notifyProviders).count { it }.let { if (it == 0) t("Desligadas") else t("{0} de 2 ligadas", it) }
+    SettingsSection.TRAKT -> t("Conta, sincronização e amigos")
     SettingsSection.LETTERBOXD -> if (s.letterboxdUser.isBlank()) t("Desligado") else "@" + s.letterboxdUser + if (s.letterboxdSync) "" else t(" · pausado")
     SettingsSection.TMDB -> if (s.tmdbKey.isNotBlank()) t("Usando a sua chave") else if (BuildConfig.TMDB_API_KEY.isNotBlank()) t("Usando a chave do app") else t("Sem chave")
     SettingsSection.BACKUP -> t("Exportar e importar")
@@ -145,6 +149,7 @@ fun SettingsScreen(nav: Nav, section: String? = null) {
                 SettingsSection.CATEGORIES -> CategoriesSection()
                 SettingsSection.SERVICES -> ServicesSection { message = it }
                 SettingsSection.NOTIFICATIONS -> NotificationsSection { message = it }
+                SettingsSection.TRAKT -> TraktSection { message = it }
                 SettingsSection.LETTERBOXD -> LetterboxdSection { message = it }
                 SettingsSection.TMDB -> TmdbSection()
                 SettingsSection.BACKUP -> BackupSection { message = it }
@@ -442,6 +447,93 @@ private fun LetterboxdSection(onMessage: (String) -> Unit) {
     }
 }
 
+/** Conta do Trakt: login por código no aparelho e sincronização nos dois sentidos. */
+@Composable
+private fun TraktSection(onMessage: (String) -> Unit) {
+    val c = LocalContainer.current
+    val p = AppTheme.palette
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val session by c.trakt.session.collectAsStateWithLifecycle()
+    var code by remember { mutableStateOf<dev.viko.sessao.data.trakt.DeviceCode?>(null) }
+    var busy by remember { mutableStateOf<String?>(null) }
+    var lastSync by remember { mutableStateOf(c.trakt.lastSync) }
+
+    if (!c.trakt.available) { Note(t("Este APK foi compilado sem o Client ID do Trakt.")); return }
+    Note(t("Com a conta do Trakt, episódios e filmes vistos, notas e a lista Quero ver ficam iguais aqui e lá, e dá para acompanhar os amigos."))
+    val s = session
+    if (s == null) {
+        Group(null) {
+            val cd = code
+            if (cd == null) {
+                LinkRow(t("Entrar no Trakt"), icon = Icons.Outlined.People) {
+                    scope.launch {
+                        runCatching { c.trakt.startLogin() }
+                            .onSuccess { d ->
+                                code = d
+                                val ok = runCatching { c.trakt.waitForApproval(d) }.getOrDefault(false)
+                                code = null
+                                if (ok) {
+                                    onMessage(t("Conta do Trakt conectada. Sincronizando..."))
+                                    runCatching { c.trakt.sync() }
+                                        .onSuccess { r -> lastSync = c.trakt.lastSync; onMessage(r.warning ?: t("Sincronizado: {0} itens trazidos, {1} enviados.", r.pulled, r.pushed)) }
+                                        .onFailure { onMessage(it.toUserMessage()) }
+                                } else onMessage(t("O código venceu ou o acesso foi negado. Tente de novo."))
+                            }
+                            .onFailure { onMessage(it.toUserMessage()) }
+                    }
+                }
+            } else {
+                Column(Modifier.fillMaxWidth().padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(t("Abra o endereço abaixo e digite o código:"), style = MaterialTheme.typography.bodyMedium, color = p.textSecondary)
+                    Spacer(Modifier.height(10.dp))
+                    Text(cd.userCode, style = Mono.style(32, FontWeight.SemiBold), color = p.accent)
+                    Text(cd.verificationUrl.removePrefix("https://"), style = Mono.style(13), color = p.textSecondary)
+                    Spacer(Modifier.height(12.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Pill(t("Abrir o site"), true, {
+                            runCatching { ctx.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(cd.verificationUrl)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
+                        })
+                        Pill(t("Copiar código"), false, {
+                            val cm = ctx.getSystemService(android.content.ClipboardManager::class.java)
+                            cm?.setPrimaryClip(android.content.ClipData.newPlainText("Trakt", cd.userCode))
+                        })
+                    }
+                    Spacer(Modifier.height(10.dp))
+                    Text(t("Esperando a aprovação. O código vale por {0} minutos.", cd.expiresIn / 60), style = MaterialTheme.typography.bodySmall, color = p.textTertiary)
+                }
+            }
+        }
+        return
+    }
+    Group(t("Conta")) {
+        Row(Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            AsyncImage(s.avatar, null, modifier = Modifier.size(44.dp).clip(CircleShape).background(p.background))
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(s.name?.takeIf { it.isNotBlank() } ?: s.username, style = MaterialTheme.typography.titleMedium)
+                Text("@" + s.username, style = MaterialTheme.typography.bodySmall, color = p.textSecondary)
+            }
+        }
+        Text(
+            if (lastSync > 0) t("Última sincronização: {0}", Dates.full(Dates.of(lastSync))) else t("Ainda não sincronizado."),
+            style = Mono.style(12), color = p.textSecondary, modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+        )
+        LinkRow(t("Sincronizar agora"), icon = Icons.Outlined.Sync) {
+            if (busy == null) scope.launch {
+                busy = t("Sincronizando...")
+                runCatching { c.trakt.sync() }
+                    .onSuccess { r -> lastSync = c.trakt.lastSync; onMessage(r.warning ?: t("Sincronizado: {0} itens trazidos, {1} enviados.", r.pulled, r.pushed)) }
+                    .onFailure { onMessage(it.toUserMessage()) }
+                busy = null
+            }
+        }
+        LinkRow(t("Sair do Trakt")) { c.trakt.logout(); onMessage(t("Conta do Trakt desconectada. A lista no aparelho continua igual.")) }
+    }
+    busy?.let { Note(it) }
+    Note(t("A sincronização roda uma vez por dia e quando você puxa o Início. Desmarcar um episódio ou remover um título aqui não apaga nada no Trakt."))
+}
+
 @Composable
 private fun TmdbSection() {
     val c = LocalContainer.current
@@ -528,6 +620,7 @@ private fun AboutSection() {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(t("Dados de filmes e séries: TMDB. Este app usa a API do TMDB, mas não é endossado nem certificado pelo TMDB."), style = MaterialTheme.typography.bodySmall)
             Text(t("Dados de streaming: JustWatch."), style = MaterialTheme.typography.bodySmall)
+            Text(t("Sincronização com o Trakt pela API pública. O app não é endossado nem certificado pelo Trakt."), style = MaterialTheme.typography.bodySmall)
             Text(t("Letterboxd: só o feed público e os arquivos de exportação. O app não é afiliado ao Letterboxd."), style = MaterialTheme.typography.bodySmall)
             Text(t("Fontes IBM Plex Sans e IBM Plex Mono, sob a SIL Open Font License."), style = MaterialTheme.typography.bodySmall)
             Text(t("Licença GPL-3.0."), style = MaterialTheme.typography.bodySmall)

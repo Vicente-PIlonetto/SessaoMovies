@@ -41,7 +41,8 @@ class AppContainer(context: Context) {
     val lists = ListRepository(db)
     val titles = TitleRepository(context, db, tmdb, images)
     val letterboxd = LetterboxdRepository(context, db, titles, settings, tmdb.http)
-    val refresh = RefreshManager(context, db, lists, titles, letterboxd, settings)
+    val trakt = dev.viko.sessao.data.trakt.TraktRepository(context, db, lists, titles, BuildConfig.TRAKT_CLIENT_ID)
+    val refresh = RefreshManager(context, db, lists, titles, letterboxd, settings, trakt)
     val backup = BackupManager(context, db, settings)
 
     init {

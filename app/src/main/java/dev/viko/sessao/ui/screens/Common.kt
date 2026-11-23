@@ -22,5 +22,6 @@ val REFRESH_ERROR get() = t("Não foi possível atualizar. Verifique a conexão 
 fun Throwable.toUserMessage(fallback: String = LOAD_ERROR): String = when (this) {
     is TmdbError -> message ?: fallback
     is LetterboxdError -> message ?: fallback
+    is dev.viko.sessao.data.trakt.TraktError -> message ?: fallback
     else -> fallback
 }
