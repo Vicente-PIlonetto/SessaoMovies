@@ -79,7 +79,7 @@ Tudo que está na sua lista abre sem conexão, com os pôsteres guardados. Só a
 
 ## Como instalar
 
-1. Baixe o arquivo **SessãoMovies.apk** na [página de versões](https://github.com/Vicente-PIlonetto/SessaoMovies/releases/latest).
+1. Baixe o arquivo **SessaoMovies.apk** na [página de versões](https://github.com/Vicente-PIlonetto/SessaoMovies/releases/latest).
 2. Abra o arquivo no celular. Se o Android pedir, permita **instalar apps desconhecidos** para o navegador ou para o app de arquivos.
 3. Abra o Sessão. Não tem login: tudo fica no seu celular.
 
@@ -114,6 +114,20 @@ Animes aparecem como qualquer outra série do TMDB. Não há nada específico pa
 ## Privacidade
 
 O Sessão conversa com o TMDB (dados de filmes e séries, e onde assistir) e, se você ligar, com o Trakt (a sua conta, para sincronizar) e com o feed público do seu perfil no Letterboxd. O acesso ao Trakt fica guardado cifrado no celular. Não há anúncios, contas nem coleta de dados. A sua lista, as notas e os episódios marcados ficam só no celular.
+
+## Apoie o projeto
+
+O Sessão é gratuito, sem anúncios e de código aberto. Se ele te ajuda e você quiser contribuir, qualquer valor pelo Pix vale. No app, fica em *Você > Configurações > Sobre > Apoiar o projeto (Pix)*.
+
+<p align="center"><img src="docs/img/pix.png" width="180" alt="QR Code do Pix" /></p>
+
+Pix copia e cola:
+
+```
+00020126580014br.gov.bcb.pix0136274972f2-15d1-406e-b968-a072d0b6fbaf5204000053039865802BR5917Vicente Pilonetto6009Concordia62070503***630408C6
+```
+
+Chave aleatória: `274972f2-15d1-406e-b968-a072d0b6fbaf` (Vicente Pilonetto)
 
 ## Encontrou um problema ou tem uma ideia?
 
